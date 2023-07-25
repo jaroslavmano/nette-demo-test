@@ -1,0 +1,29 @@
+{block content}
+
+<h1>Značky</h1>
+
+<a href="">Přidat značku</a><br>
+
+
+{foreach $users as $u}
+    <table>
+        <thead>
+            <tr>
+                <th>Název</th>
+                <th>Akce</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {iterateWhile}
+                <tr id="row-{$iterator->counter}">
+                    <td>{$u->B_Name}</td>
+                    <td><a>Smazat</a></td>
+                </tr>
+            {/iterateWhile true}
+        </tbody>
+    </table>
+
+{else}
+    Nejsou vytvořeni žádné značky!
+{/foreach}
