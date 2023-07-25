@@ -20,7 +20,7 @@
             {iterateWhile}
                 <tr id="row-{$iterator->counter}">
                     <td>{$u->B_Name}</td>
-                    <td><a>Smazat</a>  <a>Editovat</a></td>
+                    <td><a href="{plink delete!, $u->B_Name}">Smazat</a>  <a>Editovat</a></td>
                 </tr>
             {/iterateWhile true}
         </tbody>

@@ -32,5 +32,10 @@ class BrandsManager
 
         ]);
     }
+    public function removeBrand($name)
+    {
+
+        return $this->database->query('DELETE FROM Brands WHERE B_Name = ?', $name);
+    }
 
 }
