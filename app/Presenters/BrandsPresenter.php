@@ -36,7 +36,7 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
         $this->redirect('Brands:');
     }
 
-    function renderDefault(int $page = 1, int $per = 1)
+    function renderDefault(int $page = 1, int $per = 1, bool $sort = true)
     {
         // Získání počtu značek
         $brandsCount = $this->brandsManager->getBrandsCount();
@@ -47,7 +47,13 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
         $paginator->setItemsPerPage($per);
         $paginator->setPage($page);
 
-        $brands = $this->brandsManager->getBrands($paginator->getLength(), $paginator->getOffset());
+        if($sort){
+            $offset = $paginator->getCountdownOffset();
+        } else {
+            $offset = $paginator->getOffset();
+        }
+
+        $brands = $this->brandsManager->getBrands($paginator->getLength(), $offset);
 
         $this->template->brands = $brands;
 

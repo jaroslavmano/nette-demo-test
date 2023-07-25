@@ -8,7 +8,10 @@
     <table>
         <thead>
             <tr>
-                <th>Název</th>
+                <th>Název
+                    <a n:href="default, $paginator->getPage(),$paginator->getItemsPerPage(),true"><i class="tiny material-icons">arrow_downward</i></a>
+                    <a n:href="default, $paginator->getPage(),$paginator->getItemsPerPage(),false"><i class="tiny material-icons">arrow_upward</i></a>
+                </th>
                 <th>Akce</th>
             </tr>
         </thead>
@@ -42,6 +45,11 @@
             {/for}
         {/if}
     </div>
+    <a n:href="default, $paginator->getPage(),1"> 1</a>
+    <a n:href="default, $paginator->getPage(),10"> 10</a>
+    <a n:href="default, $paginator->getPage(),20"> 20</a>
+    <a n:href="default, $paginator->getPage(),30"> 30</a>
+
 
 {else}
     Nejsou vytvořeni žádné značky!

@@ -13,7 +13,7 @@ class BrandsManager
     public function getBrands(int $limit, int $offset){
 
 
-        return $this->database->query("SELECT * FROM Brands LIMIT ? OFFSET ?", $limit, $offset);
+        return $this->database->query("SELECT * FROM Brands ORDER BY B_Name LIMIT ? OFFSET ?", $limit, $offset);
     }
 
     public function getBrandsCount() : int
