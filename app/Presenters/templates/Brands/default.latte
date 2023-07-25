@@ -4,8 +4,7 @@
 
 <a href="">Přidat značku</a><br>
 
-
-{foreach $users as $u}
+{foreach $brands as $u}
     <table>
         <thead>
             <tr>
@@ -18,11 +17,31 @@
             {iterateWhile}
                 <tr id="row-{$iterator->counter}">
                     <td>{$u->B_Name}</td>
-                    <td><a>Smazat</a></td>
+                    <td><a>Smazat</a>  <a>Editovat</a></td>
                 </tr>
             {/iterateWhile true}
         </tbody>
     </table>
+
+    <div class="pagination">
+        {if !$paginator->isFirst()}
+            {for $i = ($paginator->getPage()-4); $i < $paginator->getPage(); $i++}
+                {if $i >= $paginator->getFirstPage()}
+                    <a n:href="default, $i"> {$i}</a>
+                {/if}
+            {/for}
+        {/if}
+
+            {$paginator->getPage()}
+
+	{if !$paginator->isLast()}
+            {for $i = $paginator->getPage()+1; $i < ($paginator->getPage()+4); $i++}
+                {if $i <= $paginator->getLastPage()}
+                    <a n:href="default, $i"> {$i}</a>
+                {/if}
+            {/for}
+        {/if}
+    </div>
 
 {else}
     Nejsou vytvořeni žádné značky!

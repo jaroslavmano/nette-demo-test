@@ -12,10 +12,19 @@
 	<!-- Compiled and minified JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+	<link href="{$basePath}/www/style/menu.sass" rel="stylesheet" />
+
 </head>
 
 <body>
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+	<section class="">
+		<h1>SRP</h1>
+		<p><b>Odhlásit</b> (admin)</p>
+	</section>
+	<aside>
+		<p>Boční panel</p>
+	</aside>
 
 	{include content}
 

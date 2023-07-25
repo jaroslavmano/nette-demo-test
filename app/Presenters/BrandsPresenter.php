@@ -36,9 +36,22 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
         $this->redirect('Brands:');
     }
 
-    function renderDefault()
+    function renderDefault(int $page = 1, int $per = 1)
     {
-        $this->template->users = $this->brandsManager->getBrands();
+        // Získání počtu značek
+        $brandsCount = $this->brandsManager->getBrandsCount();
+
+        // Tvorba a nastavení paginatoru
+        $paginator = new Nette\Utils\Paginator;
+        $paginator->setItemCount($brandsCount);
+        $paginator->setItemsPerPage($per);
+        $paginator->setPage($page);
+
+        $brands = $this->brandsManager->getBrands($paginator->getLength(), $paginator->getOffset());
+
+        $this->template->brands = $brands;
+
+        $this->template->paginator = $paginator;
     }
 
     function handleDelete($name)

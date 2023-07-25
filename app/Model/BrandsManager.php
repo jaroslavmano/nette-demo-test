@@ -10,10 +10,17 @@ class BrandsManager
     {
     }
 
-    public function getBrands(){
+    public function getBrands(int $limit, int $offset){
 
 
-        return $this->database->query("SELECT * FROM Brands");
+        return $this->database->query("SELECT * FROM Brands LIMIT ? OFFSET ?", $limit, $offset);
+    }
+
+    public function getBrandsCount() : int
+    {
+
+
+        return $this->database->fetchField("SELECT COUNT(*) FROM Brands");
     }
 
     public  function addBrands($name)
