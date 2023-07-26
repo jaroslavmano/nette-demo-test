@@ -20,23 +20,82 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
     {
         $form = new Form;
         $form->addText('B_Name', 'Jméno značky:')
-            ->setRequired('Prosím vyplňte jméno značky.');
+            ->setRequired('Prosím vyplňte jméno značky.')
+            ->setMaxLength(30);
 
-        $form->addSubmit('send', 'Add');
+        $form->addSubmit('send', 'Přidat značku');
 
-        $form->onSuccess[] = [$this, 'formSucceeded'];
+        $form->onSuccess[] = [$this, 'formAddSucceeded'];
         return $form;
     }
 
-    public function formSucceeded(Form $form, $data): void
+    protected function createComponentEditBrandsForm(): Form
+    {
+
+        $Oldname = isset($this->template->brandName)?$this->template->brandName:"";
+        $this->template->brandName = "";
+
+        $form = new Form;
+        $form->addHidden('OldName', $Oldname);
+        $form->addText('B_Name', 'Jméno značky:')
+            ->setRequired('Prosím vyplňte jméno značky.')
+            ->setDefaultValue($Oldname)
+            ->setMaxLength(30);
+
+        $form->addSubmit('send', 'Upravit značku');
+        $form->addSubmit('exit', 'Zavřít')
+            ->onClick[] = [$this, 'formSubmittedExit'];
+
+        $form->onSuccess[] = [$this, 'formEditSucceeded'];
+        return $form;
+    }
+
+    public function formAddSucceeded(Form $form, $data): void
+    {
+        $controll = $this->brandsManager->controllBrands($data->B_Name);
+
+        //$this->flashMessage($controll);
+        if($controll){
+            $this->brandsManager->addBrands($data->B_Name);
+            $this->flashMessage('Úspěšně jste vytvořil/a novou značku');
+        } else {
+            $this->flashMessage('Nepodařilo se vytvořit novou značku z důvodu: Značka již existuje');
+        }
+        //
+        $this->redirect('this');
+    }
+
+    public function formEditSucceeded(Form $form, $data): void
+    {
+        if($data->OldName != $data->B_Name){
+            $controll = $this->brandsManager->controllBrands($data->B_Name);
+        } else {
+            $controll = true;
+        }
+
+        if($controll){
+            $this->brandsManager->editBrands($data->OldName,$data->B_Name);
+            $this->flashMessage('Úspěšně jste upravil/a značku');
+        } else {
+            $this->flashMessage('Nepodařilo se aktualizovat název značky z důvodu: Značka již existuje');
+
+        }
+
+        $this->redirect('Brands:default');
+    }
+
+    public function formSubmittedExit(Form $form): void
     {
         // here we will process the data sent by the form
-        $this->brandsManager->addBrands($data->B_Name);
-        $this->flashMessage('Úspěšně jste vytvořil/a novou značku');
+        $this->template->brandName = "";
         $this->redirect('Brands:');
     }
 
-    function renderDefault(int $page = 1, int $per = 1, bool $sort = true)
+    function renderEdit($name){
+        $this->template->brandName = $name;
+
+    }
+    function renderDefault(int $page = 1, int $per = 1, bool $sort = true, $name = "")
     {
         // Získání počtu značek
         $brandsCount = $this->brandsManager->getBrandsCount();
@@ -47,13 +106,29 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
         $paginator->setItemsPerPage($per);
         $paginator->setPage($page);
 
-        if($sort){
-            $offset = $paginator->getCountdownOffset();
-        } else {
+
+        if($paginator->getPageCount() === 1){
+            if($sort){
+                $order = "ASC";
+            } else {
+                $order = "DESC";
+            }
+
             $offset = $paginator->getOffset();
+
+        } else {
+            $order = "DESC";
+
+            if($sort){
+                $offset = $paginator->getCountdownOffset();
+            } else {
+                $offset = $paginator->getOffset();
+            }
         }
 
-        $brands = $this->brandsManager->getBrands($paginator->getLength(), $offset);
+        $this->template->brandName = $name;
+
+        $brands = $this->brandsManager->getBrands($paginator->getLength(), $offset, $order);
 
         $this->template->brands = $brands;
 

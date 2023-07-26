@@ -2,7 +2,7 @@
 
 <h1>Značky</h1>
 
-<a href="">Přidat značku</a><br>
+<a class="modal-trigger" href="#add-brands">Přidat značku</a><br>
 
 {foreach $brands as $u}
     <table>
@@ -20,7 +20,7 @@
             {iterateWhile}
                 <tr id="row-{$iterator->counter}">
                     <td>{$u->B_Name}</td>
-                    <td><a href="{plink delete!, $u->B_Name}">Smazat</a>  <a>Editovat</a></td>
+                    <td><a href="{plink delete!, $u->B_Name}">Smazat</a>  <a class="modal-trigger" n:href="default, $paginator->getPage(),$paginator->getItemsPerPage(),false, $u->B_Name" >Editovat</a></td>
                 </tr>
             {/iterateWhile true}
         </tbody>
@@ -54,3 +54,39 @@
 {else}
     Nejsou vytvořeni žádné značky!
 {/foreach}
+
+    <div id="add-brands" class="modal">
+
+        <h2>Přidat značku</h2>
+
+        {control addBrandsForm}
+
+    </div>
+
+    {if isset($brandName) && !empty($brandName)}
+    <div id="edit-brands" class="modal modal-open">
+
+        <h2>Upravit značku značku</h2>
+
+        {control editBrandsForm}
+
+    </div>
+    {/if}
+
+
+<script>
+    {if isset($brandName) && !empty($brandName)}
+    $(document).ready(function(){
+        $('#edit-brands').modal();
+        $('#edit-brands').modal('open');
+    });
+    {else}
+    $(document).ready(function(){
+
+        $('.modal').modal();
+
+
+    })
+    {/if}
+
+</script>
