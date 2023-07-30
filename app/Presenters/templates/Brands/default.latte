@@ -1,14 +1,15 @@
 {block content}
 
-<h1>Značky</h1>
-
-<a class="modal-trigger" href="#add-brands">Přidat značku</a><br>
-
+<a class="back"><i class="tiny material-icons">arrow_back</i> Značky</a><br>
+<br>
+<a class="modal-trigger addButton" href="#add-brands"><i class="tiny material-icons">add</i> Přidat značku</a>
+<br>
+<br>
 {foreach $brands as $u}
-    <table>
+    <table class="brandsTable">
         <thead>
             <tr>
-                <th>Název
+                <th width="80%">Název
                     <a n:href="default, $paginator->getPage(),$paginator->getItemsPerPage(),true"><i class="tiny material-icons">arrow_downward</i></a>
                     <a n:href="default, $paginator->getPage(),$paginator->getItemsPerPage(),false"><i class="tiny material-icons">arrow_upward</i></a>
                 </th>
@@ -20,13 +21,13 @@
             {iterateWhile}
                 <tr id="row-{$iterator->counter}">
                     <td>{$u->B_Name}</td>
-                    <td><a href="{plink delete!, $u->B_Name}">Smazat</a>  <a class="modal-trigger" n:href="default, $paginator->getPage(),$paginator->getItemsPerPage(),false, $u->B_Name" >Editovat</a></td>
+                    <td><a class="actionButton" href="{plink delete!, $u->B_Name}">Smazat</a>  <a class="modal-trigger actionButton" n:href="default, $paginator->getPage(),$paginator->getItemsPerPage(),false, $u->B_Name" >Editovat</a></td>
                 </tr>
             {/iterateWhile true}
         </tbody>
     </table>
-
-    <div class="pagination">
+    <br>
+    <div class="pagination rightSec">
         {if !$paginator->isFirst()}
             {for $i = ($paginator->getPage()-4); $i < $paginator->getPage(); $i++}
                 {if $i >= $paginator->getFirstPage()}
@@ -45,10 +46,13 @@
             {/for}
         {/if}
     </div>
-    <a n:href="default, $paginator->getPage(),1"> 1</a>
-    <a n:href="default, $paginator->getPage(),10"> 10</a>
-    <a n:href="default, $paginator->getPage(),20"> 20</a>
-    <a n:href="default, $paginator->getPage(),30"> 30</a>
+    <div class="rightSec">
+        <a class="info">Řazení:</a>
+        <a n:href="default, $paginator->getPage(),1"> 1</a>
+        <a n:href="default, $paginator->getPage(),10"> 10</a>
+        <a n:href="default, $paginator->getPage(),20"> 20</a>
+        <a n:href="default, $paginator->getPage(),30"> 30</a>
+    </div>
 
 
 {else}
@@ -57,16 +61,19 @@
 
     <div id="add-brands" class="modal">
 
-        <h2>Přidat značku</h2>
+        <h2 class="modalTitle">Přidat značku</h2>
 
         {control addBrandsForm}
+
+        <a class="back" style="text-align: right" n:href="this"><i class="tiny material-icons">close</i> Zavřít</a>
+
 
     </div>
 
     {if isset($brandName) && !empty($brandName)}
     <div id="edit-brands" class="modal modal-open">
 
-        <h2>Upravit značku značku</h2>
+        <h2 class="modalTitle">Upravit značku značku</h2>
 
         {control editBrandsForm}
 

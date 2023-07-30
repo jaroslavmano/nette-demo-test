@@ -9,24 +9,28 @@
 	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+	<link href="{$basePath}/style/menu.css" rel="stylesheet" >
+	<link href="{$basePath}/style/menu.css.map" rel="stylesheet">
+	<link href="{$basePath}/style/brands.css" rel="stylesheet" >
+	<link href="{$basePath}/style/brands.css.map" rel="stylesheet">
+
 	<!-- Compiled and minified JavaScript -->
 	<script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-	<link href="{$basePath}/www/style/menu.sass" rel="stylesheet" />
-
 </head>
 
 <body>
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-	<section class="">
-		<h1>SRP</h1>
-		<p><b>Odhlásit</b> (admin)</p>
+	<section class="menu">
+		<ul class="menuContent">
+			<li><span>SRP</span></li>
+			<li style="float: right"><span>Odhlásit (admin)</span></li>
+		</ul>
+
 	</section>
-	<aside>
-		<p>Boční panel</p>
-	</aside>
+
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
 	{include content}
 
