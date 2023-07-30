@@ -1,6 +1,6 @@
 {block content}
 
-<a class="back"><i class="tiny material-icons">arrow_back</i> Značky</a><br>
+<a n:href="Home:default" class="back"><i class="tiny material-icons">arrow_back</i> Značky</a><br>
 <br>
 <a class="modal-trigger addButton" href="#add-brands"><i class="tiny material-icons">add</i> Přidat značku</a>
 <br>
@@ -31,7 +31,7 @@
         {if !$paginator->isFirst()}
             {for $i = ($paginator->getPage()-4); $i < $paginator->getPage(); $i++}
                 {if $i >= $paginator->getFirstPage()}
-                    <a n:href="default, $i"> {$i}</a>
+                    <a n:href="default, $i,$paginator->getItemsPerPage(), $sort"> {$i}</a>
                 {/if}
             {/for}
         {/if}
@@ -41,19 +41,20 @@
 	{if !$paginator->isLast()}
             {for $i = $paginator->getPage()+1; $i < ($paginator->getPage()+4); $i++}
                 {if $i <= $paginator->getLastPage()}
-                    <a n:href="default, $i"> {$i}</a>
+                    <a n:href="default, $i, $paginator->getItemsPerPage(),$sort"> {$i}</a>
                 {/if}
             {/for}
         {/if}
     </div>
     <div class="rightSec">
         <a class="info">Řazení:</a>
-        <a n:href="default, $paginator->getPage(),1"> 1</a>
-        <a n:href="default, $paginator->getPage(),10"> 10</a>
-        <a n:href="default, $paginator->getPage(),20"> 20</a>
-        <a n:href="default, $paginator->getPage(),30"> 30</a>
+        <a n:href="default, $paginator->getPage(),1,$sort"> 1</a>
+        <a n:href="default, $paginator->getPage(),10,$sort"> 10</a>
+        <a n:href="default, $paginator->getPage(),20,$sort"> 20</a>
+        <a n:href="default, $paginator->getPage(),30,$sort"> 30</a>
     </div>
-
+<br>
+    <br>
 
 {else}
     Nejsou vytvořeni žádné značky!
@@ -69,8 +70,7 @@
 
 
     </div>
-
-    {if isset($brandName) && !empty($brandName)}
+    {if (isset($brandName) && !empty($brandName))}
     <div id="edit-brands" class="modal modal-open">
 
         <h2 class="modalTitle">Upravit značku značku</h2>
@@ -82,7 +82,7 @@
 
 
 <script>
-    {if isset($brandName) && !empty($brandName)}
+    {if (isset($brandName) && !empty($brandName))}
     $(document).ready(function(){
         $('#edit-brands').modal();
         $('#edit-brands').modal('open');

@@ -54,16 +54,15 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
     {
         $controll = $this->brandsManager->controllBrands($data->B_Name);
 
-        //$this->flashMessage($controll);
         if($controll){
             $this->brandsManager->addBrands($data->B_Name);
             $this->flashMessage('Úspěšně jste vytvořil/a novou značku');
         } else {
             $this->flashMessage('Nepodařilo se vytvořit novou značku z důvodu: Značka již existuje');
         }
-        //
-        $this->redirect('this');
-    }
+
+        $this->template->brandName = "";
+        $this->redirect('Brands:default');    }
 
     public function formEditSucceeded(Form $form, $data): void
     {
@@ -80,7 +79,7 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
             $this->flashMessage('Nepodařilo se aktualizovat název značky z důvodu: Značka již existuje');
 
         }
-
+        $this->template->brandName = "";
         $this->redirect('Brands:default');
     }
 
@@ -88,17 +87,20 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
     {
         // here we will process the data sent by the form
         $this->template->brandName = "";
-        $this->redirect('Brands:');
+        $this->redirect('Brands:default');
     }
 
     function renderEdit($name){
-        $this->template->brandName = $name;
+        //$this->template->brandName = $name;
 
     }
     function renderDefault(int $page = 1, int $per = 1, bool $sort = true, $name = "")
     {
         // Získání počtu značek
         $brandsCount = $this->brandsManager->getBrandsCount();
+
+        $this->template->sort = $sort;
+
 
         // Tvorba a nastavení paginatoru
         $paginator = new Nette\Utils\Paginator;
@@ -107,27 +109,17 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
         $paginator->setPage($page);
 
 
-        if($paginator->getPageCount() === 1){
-            if($sort){
-                $order = "ASC";
-            } else {
-                $order = "DESC";
-            }
 
-            $offset = $paginator->getOffset();
-
-        } else {
-            $order = "DESC";
+            $order = "ASC";
 
             if($sort){
-                $offset = $paginator->getCountdownOffset();
-            } else {
                 $offset = $paginator->getOffset();
+            } else {
+                $offset = $paginator->getCountdownOffset();
             }
-        }
+
 
         $this->template->brandName = $name;
-
         $brands = $this->brandsManager->getBrands($paginator->getLength(), $offset, $order);
 
         $this->template->brands = $brands;
@@ -139,7 +131,7 @@ final class BrandsPresenter extends Nette\Application\UI\Presenter
     {
         $this->brandsManager->removeBrand($name);
         $this->flashMessage("Značka byla smazána!");
-        $this->redirect("this");
+        $this->redirect('Brands:default');
     }
 
 }

@@ -38,12 +38,10 @@ class BrandsManager
 
         $row =  $this->database->fetch("SELECT B_CreateDate FROM Brands WHERE B_Name = ?",$name);
 
-
-        if(isset($row) && is_array($row)){
-            return true;
-
-        } else {
+        if(isset($row) && !empty($row)){
             return false;
+        } else {
+            return true;
         }
 
     }
